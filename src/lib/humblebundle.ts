@@ -8,7 +8,12 @@ export class HumbleBundle {
   async getBundle(bundleName: string): Promise<Bundle> {
     const res = await this.fetch(
       `https://www.humblebundle.com/books/${bundleName}`,
-      { method: "GET" },
+      {
+        method: "GET",
+        next: {
+          revalidate: 3600,
+        },
+      },
     );
     if (!res.ok) {
       throw new Error("Failed to fetch page");

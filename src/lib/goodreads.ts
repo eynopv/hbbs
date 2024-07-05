@@ -8,6 +8,12 @@ export class Goodreads {
   async getBookScore(bookName: string): Promise<BookScoreResult | null> {
     const res = await this.fetch(
       `https://www.goodreads.com/search?utf8=%E2%9C%93&q=${bookName}`,
+      {
+        method: "GET",
+        next: {
+          revalidate: 3600,
+        },
+      },
     );
 
     if (!res.ok) {
