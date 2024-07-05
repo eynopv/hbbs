@@ -2,6 +2,9 @@ import { Goodreads, type BookScoreResult } from "@/lib/goodreads";
 import { HumbleBundle } from "@/lib/humblebundle";
 import Book from "@/components/book";
 
+// Revalidate cache at most every hour
+export const revalidate = 3600;
+
 type PageProps = {
   params: {
     bundleName: string;
