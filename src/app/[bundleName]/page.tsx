@@ -16,6 +16,10 @@ export default async function Page({ params: { bundleName } }: PageProps) {
   const gr = new Goodreads(fetch);
   const bundle = await hb.getBundle(bundleName);
 
+  if (!bundle) {
+    return <div className="text-2xl">Bundle {bundleName} not found</div>;
+  }
+
   const goodreadsResults: { [key: string]: BookScoreResult } = {};
   await Promise.all(
     bundle.items.map(async (item) => {

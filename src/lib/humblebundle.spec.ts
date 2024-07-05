@@ -34,7 +34,7 @@ describe("HumbleBundle", () => {
     });
   });
 
-  it("throws on non book bundle", async () => {
+  it("returns null on non book bundle", async () => {
     const hb = new HumbleBundle(
       jest.fn().mockResolvedValue({
         ok: true,
@@ -51,8 +51,6 @@ describe("HumbleBundle", () => {
                                   `),
       }),
     );
-    await expect(hb.getBundle("not-book-bundle")).rejects.toThrow(
-      "Not a book bundle",
-    );
+    await expect(hb.getBundle("not-book-bundle")).resolves.toBeNull();
   });
 });

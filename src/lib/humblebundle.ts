@@ -5,7 +5,7 @@ type Fetch = typeof fetch;
 export class HumbleBundle {
   constructor(private fetch: Fetch) {}
 
-  async getBundle(bundleName: string): Promise<Bundle> {
+  async getBundle(bundleName: string): Promise<Bundle | null> {
     const res = await this.fetch(
       `https://www.humblebundle.com/books/${bundleName}`,
       {
@@ -16,7 +16,8 @@ export class HumbleBundle {
       },
     );
     if (!res.ok) {
-      throw new Error("Failed to fetch page");
+      console.log("Failed to fetch bundle:", bundleName);
+      return null;
     }
 
     const text = await res.text();
@@ -27,13 +28,17 @@ export class HumbleBundle {
       .find((el) => el.getAttribute("id") === "webpack-bundle-page-data");
 
     if (!pageData) {
-      throw new Error("Failed to find page data on page");
+      console.log("Failed to find page data on page");
+      return null;
     }
 
     const jsonData = JSON.parse(pageData!.innerText) as PageData;
 
-    if (jsonData.bundleData.basic_data.media_type != "ebook") {
-      throw new Error("Not a book bundle");
+    if (
+      !["ebook", "comic"].includes(jsonData.bundleData.basic_data.media_type)
+    ) {
+      console.log("Not a book bundle: ", bundleName);
+      return null;
     }
 
     const books = Object.values(jsonData.bundleData.tier_item_data)
