@@ -25,10 +25,9 @@ export default function Home() {
 
   return (
     <form onSubmit={onSubmit}>
-      <label htmlFor="bundleUrl" className="text-xl">
+      <label htmlFor="bundleUrl" className="text-xl block mb-2">
         Paste HumbleBundle link
       </label>
-      <br />
       <div className="flex flex-row gap-x-2">
         <input
           type="text"
