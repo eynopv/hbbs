@@ -8,6 +8,20 @@ let page: HomePage;
 let user: UserEvent;
 
 describe("Home", () => {
+  beforeAll(() => {
+    const originalWindowLocation = window.location;
+    Object.defineProperty(window, "location", {
+      value: {
+        ...originalWindowLocation,
+        reload: jest.fn(),
+      },
+      writable: true,
+    });
+    window.history.pushState = jest.fn((_, __, url) => {
+      window.location.pathname = String(url);
+    });
+  });
+
   beforeEach(() => {
     user = userEvent.setup();
     page = new HomePage();
@@ -39,6 +53,7 @@ describe("Home", () => {
     );
     await user.click(page.submitButton);
     expect(window.location.pathname).toBe("/example-bundle");
+    expect(window.location.reload).toHaveBeenCalled();
   });
 });
 

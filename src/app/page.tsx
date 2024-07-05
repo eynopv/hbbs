@@ -20,6 +20,7 @@ export default function Home() {
     const bundle = url.pathname.split("/").at(-1);
 
     window.history.pushState(null, "", `/${bundle}`);
+    window.location.reload();
   };
 
   return (
