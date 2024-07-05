@@ -19,7 +19,8 @@ export class Goodreads {
     const bookRow = html.querySelector("tr");
 
     if (!bookRow) {
-      throw new Error("Book not found: " + bookName);
+      console.log("Book not found: " + bookName);
+      return null;
     }
 
     const rating = bookRow.querySelector(".minirating");
