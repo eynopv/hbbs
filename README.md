@@ -11,7 +11,7 @@ The rating and amount of reviews are fetched from Goodreads.
 - Vercel
 - Testing Library
 
-## Where is data comming from
+## Where is data coming from
 
 - [Humble Bundle](https://www.humblebundle.com/)
 - [Goodreads](https://www.goodreads.com/)
