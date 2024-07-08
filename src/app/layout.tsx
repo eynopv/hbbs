@@ -15,7 +15,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className="px-4 py-10 max-w-3xl mx-auto">
-          <h1 className="text-4xl mb-8">Humble Book Bundle Score</h1>
+          <h1 className="text-4xl mb-8">
+            <a href="/" className="text-cyan-400">
+              Humble Book Bundle Score
+            </a>
+          </h1>
           {children}
         </div>
       </body>
