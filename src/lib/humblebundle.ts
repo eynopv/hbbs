@@ -7,7 +7,7 @@ export class HumbleBundle {
       {
         method: "GET",
         next: {
-          revalidate: 3600,
+          revalidate: 3600 * 24,
         },
       },
     );

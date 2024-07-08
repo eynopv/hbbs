@@ -7,7 +7,7 @@ export class Goodreads {
       {
         method: "GET",
         next: {
-          revalidate: 3600,
+          revalidate: 3600 * 24,
         },
       },
     );
