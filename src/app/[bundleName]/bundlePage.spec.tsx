@@ -1,45 +1,27 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import fs from "fs";
-import path from "path";
 
+import { server } from "@/mocks/node";
 import Page from "./page";
 
 describe("Bundle page", () => {
   let page: BundlePage;
-  let oldFetch: any;
 
-  beforeEach(() => {
-    oldFetch = global.fetch;
-    global.fetch = jest
-      .fn()
-      .mockReturnValueOnce({
-        ok: true,
-        text: () =>
-          Promise.resolve(
-            fs.readFileSync(
-              path.resolve(__dirname, "../../__tests__/humble.html"),
-              "utf8",
-            ),
-          ),
-      } as Response)
-      .mockResolvedValue({
-        ok: true,
-        text: () =>
-          Promise.resolve(
-            fs.readFileSync(
-              path.resolve(__dirname, "../../__tests__/goodreads.html"),
-              "utf8",
-            ),
-          ),
-      });
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
+  beforeEach(async () => {
     page = new BundlePage();
-    page.render();
+    await page.render();
   });
 
   afterEach(() => {
-    global.fetch = oldFetch;
-    jest.restoreAllMocks();
+    server.resetHandlers();
   });
 
   it("loads home page", async () => {

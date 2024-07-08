@@ -1,12 +1,8 @@
 import { parse } from "node-html-parser";
 
-type Fetch = typeof fetch;
-
 export class Goodreads {
-  constructor(private fetch: Fetch) {}
-
   async getBookScore(bookName: string): Promise<BookScoreResult | null> {
-    const res = await this.fetch(
+    const res = await fetch(
       `https://www.goodreads.com/search?utf8=%E2%9C%93&q=${bookName}`,
       {
         method: "GET",

@@ -1,22 +1,21 @@
-import fs from "fs";
-import path from "path";
-
+import { server } from "@/mocks/node";
 import { Goodreads } from "./goodreads";
 
 describe("Goodreads", () => {
-  const mockFetch = jest.fn().mockResolvedValue({
-    ok: true,
-    text: () =>
-      Promise.resolve(
-        fs.readFileSync(
-          path.resolve(__dirname, "../__tests__/goodreads.html"),
-          "utf8",
-        ),
-      ),
-  } as Response);
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
+  afterEach(() => {
+    server.resetHandlers();
+  });
 
   it("should fetch data for the book", async () => {
-    const gr = new Goodreads(mockFetch);
+    const gr = new Goodreads();
     const score = await gr.getBookScore("Learning GitHub Actions");
     expect(score).toMatchObject({
       averageRating: 4.26,

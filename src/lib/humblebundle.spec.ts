@@ -1,22 +1,21 @@
-import fs from "fs";
-import path from "path";
-
+import { server } from "@/mocks/node";
 import { HumbleBundle } from "./humblebundle";
 
 describe("HumbleBundle", () => {
-  const mockFetch = jest.fn().mockResolvedValue({
-    ok: true,
-    text: () =>
-      Promise.resolve(
-        fs.readFileSync(
-          path.resolve(__dirname, "../__tests__/humble.html"),
-          "utf8",
-        ),
-      ),
-  } as Response);
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
+  afterEach(() => {
+    server.resetHandlers();
+  });
 
   it("fetches bundle", async () => {
-    const hb = new HumbleBundle(mockFetch);
+    const hb = new HumbleBundle();
     const bundle = await hb.getBundle("example-bundle");
     expect(bundle).toMatchObject({
       human_name: "Test Bundle",
@@ -35,22 +34,7 @@ describe("HumbleBundle", () => {
   });
 
   it("returns null on non book bundle", async () => {
-    const hb = new HumbleBundle(
-      jest.fn().mockResolvedValue({
-        ok: true,
-        text: () =>
-          Promise.resolve(`<script id="webpack-bundle-page-data" type="application/json">
-                                  {
-        "bundleData": {
-          "basic_data": {
-            "media_type": "not-book"
-          }
-        }
-                                  }
-                                  </script>
-                                  `),
-      }),
-    );
+    const hb = new HumbleBundle();
     await expect(hb.getBundle("not-book-bundle")).resolves.toBeNull();
   });
 });

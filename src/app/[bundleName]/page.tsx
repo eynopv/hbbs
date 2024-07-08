@@ -2,9 +2,6 @@ import { Goodreads, type BookScoreResult } from "@/lib/goodreads";
 import { HumbleBundle } from "@/lib/humblebundle";
 import Book from "@/components/book";
 
-// Revalidate cache at most every hour
-export const revalidate = 3600;
-
 type PageProps = {
   params: {
     bundleName: string;
@@ -12,8 +9,8 @@ type PageProps = {
 };
 
 export default async function Page({ params: { bundleName } }: PageProps) {
-  const hb = new HumbleBundle(fetch);
-  const gr = new Goodreads(fetch);
+  const hb = new HumbleBundle();
+  const gr = new Goodreads();
   const bundle = await hb.getBundle(bundleName);
 
   if (!bundle) {

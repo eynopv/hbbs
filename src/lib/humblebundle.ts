@@ -1,12 +1,8 @@
 import { parse } from "node-html-parser";
 
-type Fetch = typeof fetch;
-
 export class HumbleBundle {
-  constructor(private fetch: Fetch) {}
-
   async getBundle(bundleName: string): Promise<Bundle | null> {
-    const res = await this.fetch(
+    const res = await fetch(
       `https://www.humblebundle.com/books/${bundleName}`,
       {
         method: "GET",
@@ -37,7 +33,11 @@ export class HumbleBundle {
     if (
       !["ebook", "comic"].includes(jsonData.bundleData.basic_data.media_type)
     ) {
-      console.log("Not a book bundle: ", bundleName);
+      console.log(
+        "Not a book bundle: ",
+        bundleName,
+        jsonData.bundleData.basic_data.media_type,
+      );
       return null;
     }
 
