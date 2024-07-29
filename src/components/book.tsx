@@ -12,7 +12,7 @@ export default function Book({
         alt={`${title} - Cover image`}
         className="w-[150px]"
       />
-      <div>
+      <div className="min-w-[300px] grow shrink basis-[300px]">
         <h4 className="text-xl">
           {goodreadsData ? (
             <a href={goodreadsData.url} className="text-cyan-400">
