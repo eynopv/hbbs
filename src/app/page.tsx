@@ -1,12 +1,14 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { FaSpinner } from "react-icons/fa6";
 
 import { validateUrl } from "@/lib/humblebundle";
 
 export default function Home() {
   const [errorMessage, setErrorMessage] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -19,9 +21,19 @@ export default function Home() {
     const url = new URL(inputValue);
     const bundle = url.pathname.split("/").at(-1);
 
+    setIsLoading(true);
+
     window.history.pushState(null, "", `/${bundle}`);
     window.location.reload();
   };
+
+  if (isLoading) {
+    return (
+      <div className="animate-spin inline-block">
+        <FaSpinner title="Loading" size="4em" />
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={onSubmit}>

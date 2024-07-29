@@ -18,7 +18,9 @@ describe("Home", () => {
       writable: true,
     });
     window.history.pushState = jest.fn((_, __, url) => {
-      window.location.pathname = String(url);
+      if (url !== "test-loading") {
+        window.location.pathname = String(url);
+      }
     });
   });
 
@@ -55,6 +57,15 @@ describe("Home", () => {
     expect(window.location.pathname).toBe("/example-bundle");
     expect(window.location.reload).toHaveBeenCalled();
   });
+
+  it("shows loading indicator on submit", async () => {
+    await user.type(
+      page.inputField,
+      "https://www.humblebundle.com/test-loading",
+    );
+    await user.click(page.submitButton);
+    expect(page.loadingIndicator).toBeInTheDocument();
+  });
 });
 
 class HomePage {
@@ -74,5 +85,9 @@ class HomePage {
 
   get errorMessage() {
     return screen.queryByText("Provide a valid HumbleBundle link");
+  }
+
+  get loadingIndicator() {
+    return screen.getByTitle("Loading");
   }
 }
