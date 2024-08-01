@@ -3,7 +3,7 @@ import { parse } from "node-html-parser";
 export class Goodreads {
   async getBookScore(bookName: string): Promise<BookScoreResult | null> {
     const res = await fetch(
-      `https://www.goodreads.com/search?utf8=%E2%9C%93&q=${encodeURIComponent(bookName)}`,
+      `https://www.goodreads.com/search?utf8=%E2%9C%93&q=${encodeURIComponent(removeEdition(bookName))}`,
       {
         method: "GET",
         next: {
@@ -42,6 +42,10 @@ export class Goodreads {
       ratingsCount: count,
     };
   }
+}
+
+export function removeEdition(bookName: string): string {
+  return bookName.replace(/,?\s*\d+(st|nd|rd|th) edition\b/i, "").trim();
 }
 
 export type BookScoreResult = {
