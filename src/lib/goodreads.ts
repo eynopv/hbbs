@@ -3,7 +3,7 @@ import { parse } from "node-html-parser";
 export class Goodreads {
   async getBookScore(bookName: string): Promise<BookScoreResult | null> {
     const res = await fetch(
-      `https://www.goodreads.com/search?utf8=%E2%9C%93&q=${bookName}`,
+      `https://www.goodreads.com/search?utf8=%E2%9C%93&q=${encodeURIComponent(bookName)}`,
       {
         method: "GET",
         next: {
